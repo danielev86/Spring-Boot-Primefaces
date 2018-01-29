@@ -1,0 +1,144 @@
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/template.xhtml">
+		<style>
+			.ui-dialog{
+				top: 0px !important;
+			}
+		</style>
+
+	
+		<ui:define name="body_content">
+		
+			<script type="text/javascript">
+				function resetDatatableActor(){
+					if(PF('actorTableVarId')!= undefined){
+						PF('actorTableVarId').getPaginator().setPage(0)
+					}
+				}
+			</script>
+		
+	
+			<h:form id="actorForm">
+
+	
+				<p:panel styleClass="ui-grid" id="pnlContentId">
+					<h:panelGrid  columns="1" styleClass="ui-grid-col-4" id="pnlActorSearch">
+						<p:outputLabel for="firstNameId" value="#{msg['label.actor.search.section.firstname']}"/>
+						<p:inputText id="firstNameId" value="#{actorSearchController.actorFilter.firstName}"/>
+						<p:outputLabel for="lastNameId" value="#{msg['label.actor.search.section.lastname']}"/>
+						<p:inputText id="lastNameId" value="#{actorSearchController.actorFilter.lastName}"/>
+						<p:commandButton
+							value="#{msg['label.btn.search']}"
+							actionListener="#{actorSearchController.findActor}"
+							process="actorForm:pnlActorSearch"
+							update="actorForm:pnlActorSearch, actorForm:pnlActorTable"
+							onclick="resetDatatableActor();"/>
+					</h:panelGrid>
+					<h:panelGroup styleClass="ui-grid-col-8" id="pnlActorTable">
+						<p:dataTable
+							id="actorTableId"
+							widgetVar="actorTableVarId"
+							value="#{actorSearchController.actorLazyData}"
+							var="actor"
+							paginator="true"
+							rows="10"
+							lazy="true"
+							paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15"
+							editable="true">
+							
+							<!-- <p:ajax event="rowSelect" update=":actorForm:actorDetailPanel" oncomplete="PF('actorSelectedVar').show();"/> -->
+							<p:ajax event="rowEdit" listener="#{actorSearchController.onRowEdit}"/>
+							
+							<p:column headerText="#{msg['label.actor.search.section.firstname.column']}" sortBy="#{actor.firstName}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{actor.firstName}"/>
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{actor.firstName}" style="{width:100%; text-transform:uppercase;}" converter="upperCaseConverter"/>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+		
+							<p:column headerText="#{msg['label.actor.search.section.lastname.column']}" sortBy="#{actor.lastName}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{actor.lastName}"/>
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{actor.lastName}" style="{width:100%; text-transform:uppercase;}" converter="upperCaseConverter"/>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							
+							<p:column headerText="#{msg['label.actor.search.section.lastupdate.column']}" sortBy="#{actor.lastUpdate}">
+								<h:outputText value="#{actor.lastUpdate}">
+									<f:convertDateTime pattern="#{msg['label.day.pattern']}"/>
+								</h:outputText>
+							</p:column>
+							
+							<p:column style="width:32px">
+          					 	<p:rowEditor />
+       						</p:column>
+						</p:dataTable>
+					</h:panelGroup>
+				</p:panel>
+				<!-- 
+				<p:dialog widgetVar="actorSelectedVar"
+				header="#{msg['label.actor.search.search.dialog.header']}" 
+				modal="true" 
+				hideEffect="fade"
+				width="15%" 
+				resizable="false">
+					<h:panelGroup id="actorDetailPanel">
+						<div class="ui-grid">
+							<div class="ui-grid-col-6">
+								<h:outputText value="#{msg['label.actor.search.section.firstname.column']}"/>
+							</div>
+							<div class="ui-grid-col-6">
+								<h:outputText value="#{actorSearchController.actorDetail.firstName}"/>
+							</div>						
+						</div>
+						
+						<div class="ui-grid">
+							<div class="ui-grid-col-6">
+								<h:outputText value="#{msg['label.actor.search.section.lastname.column']}"/>
+							
+							</div>
+							<div class="ui-grid-col-6">
+								<h:outputText value="#{actorSearchController.actorDetail.lastName}"/>
+							</div>						
+						</div>
+						
+						<div class="ui-grid">
+							<div class="ui-grid-col-6">
+								<h:outputText value="#{msg['label.actor.search.section.lastupdate.column']}">
+								</h:outputText>
+							
+							</div>
+							<div class="ui-grid-col-6">
+								<h:outputText value="#{actorSearchController.actorDetail.lastUpdate}">
+									<f:convertDateTime pattern="#{msg['label.day.pattern']}"/>
+								</h:outputText>
+							</div>						
+						</div>
+					</h:panelGroup>
+					<h:panelGroup styleClass="ui-grid">
+						<div class="ui-grid-col-12">
+							<p:commandButton value="#{msg['label.btn.close']}" oncomplete="PF('actorSelectedVar').hide();" style="float:right"/>	
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+				-->
+			</h:form>
+		
+		</ui:define>
+	
+</ui:composition>

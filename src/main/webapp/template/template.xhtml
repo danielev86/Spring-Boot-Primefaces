@@ -1,0 +1,42 @@
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:head>
+		<h:outputScript name="jsf.js" library="javax.faces" target="head"/>
+	</h:head>
+	
+	<h:body>	
+			
+			<p:panel styleClass="ui-grid" id="pnlHeaderId">
+				<h1 style="text-align: center;">#{msg['label.title.primefaces.spring.boot.demo']}</h1>
+			</p:panel>
+			
+			<h:form id="menuFormId">
+				<h:panelGroup styleClass="ui-grid">
+						<p:menubar>
+							<p:menuitem action="homeApplication" value="#{msg['label.menu.homepage.title']}"/>
+							<p:submenu label="#{msg['label.menu.actor.title']}">
+								<p:menuitem action="actorSearch" value="#{msg['label.menu.actor.actor.search.submenu']}"/>
+								<p:menuitem action="actorInsert" value="#{msg['label.menu.actor.actor.insert.submenu']}"/>
+							</p:submenu>
+							
+							<p:submenu label="First link">
+							</p:submenu>
+							
+							<p:submenu label="Second link">
+							</p:submenu>
+						</p:menubar>
+				</h:panelGroup>
+			</h:form>
+			
+			<ui:insert name="body_content">
+			</ui:insert>
+	
+	
+	
+	</h:body>
+</html>
